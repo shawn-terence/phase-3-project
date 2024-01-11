@@ -42,3 +42,14 @@ def create_database():
 def search_movies(keyword):
     movies = session.query(Movie).filter(Movie.title.ilike(f'%{keyword}%')).all()
     return movies
+
+def add_user(name):
+    new_user = User(name=name)
+    session.add(new_user)
+    session.commit()
+
+
+def add_genre(name):
+    new_genre = Genre(name=name)
+    session.add(new_genre)
+    session.commit()

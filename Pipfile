@@ -4,8 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-
-[dev-packages]
+alembic = "1.13.1"
+importlib-metadata = "6.0.0"
+importlib-resources = "5.10.0"
+ipdb = "0.13.9"
+SQLAlchemy = "2.0.23"
+click = "8.1.7"
 
 [requires]
-python_version = "3.12"
+python_full_version = "3.12"

@@ -15,3 +15,10 @@ class Genre(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     movies = relationship('Movie', back_populates='genre')
+
+class Movie(Base):
+    __tablename__ = 'movies'
+    id = Column(Integer, primary_key=True)
+    title = Column(String)
+    genre_id = Column(Integer, ForeignKey('genres.id'))
+    genre = relationship('Genre', back_populates='movies')

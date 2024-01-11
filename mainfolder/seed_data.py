@@ -1,3 +1,6 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from movielibrary import Base, Genre, Movie, User, BorrowedMovies
 
 
 
@@ -32,3 +35,14 @@ def add_seed_data(session):
         user1, user2
     ])
     session.commit()
+
+    if __name__ == "__main__":
+        engine = create_engine('sqlite:///movie_database.db', echo=False)
+        Base.metadata.create_all(engine)
+        
+        Session = sessionmaker(bind=engine)
+        session = Session()
+
+        add_seed_data(session)
+
+        print("Seed data added successfully.")

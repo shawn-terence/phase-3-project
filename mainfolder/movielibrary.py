@@ -143,8 +143,7 @@ def main():
             name = click.prompt("Enter the user's name to delete")
             delete_user(name)
         elif choice == 8:
-            save_data_to_files()
-            click.echo("Data saved. Exiting Movie Database Management System. Goodbye!")
+            click.echo("Exiting Movie Database Management System. Goodbye!")
             break
         else:
             click.echo("Invalid choice. Please enter a number between 1 and 8.")

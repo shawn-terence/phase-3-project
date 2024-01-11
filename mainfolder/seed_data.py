@@ -2,9 +2,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from movielibrary import Base, Genre, Movie, User, BorrowedMovies
 
-
-
 def add_seed_data(session):
+    if session.query(Genre).count() > 0:
+        print("Seed data already exists. Skipping.")
+        return
+    
     # Genres
     action_genre = Genre(name="Action")
     drama_genre = Genre(name="Drama")
@@ -36,13 +38,13 @@ def add_seed_data(session):
     ])
     session.commit()
 
-    if __name__ == "__main__":
-        engine = create_engine('sqlite:///movie_database.db', echo=False)
-        Base.metadata.create_all(engine)
-        
-        Session = sessionmaker(bind=engine)
-        session = Session()
+if __name__ == "__main__":
+    engine = create_engine('sqlite:///movie_database.db', echo=False)
+    Base.metadata.create_all(engine)
+    
+    Session = sessionmaker(bind=engine)
+    session = Session()
 
-        add_seed_data(session)
+    add_seed_data(session)
 
-        print("Seed data added successfully.")
+    print("Seed data added successfully.")

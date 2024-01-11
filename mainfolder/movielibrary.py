@@ -53,3 +53,42 @@ def add_genre(name):
     new_genre = Genre(name=name)
     session.add(new_genre)
     session.commit()
+
+def add_movie(title, genre_name):
+    genre = session.query(Genre).filter_by(name=genre_name).first()
+    if genre:
+        new_movie = Movie(title=title, genre=genre)
+        session.add(new_movie)
+        session.commit()
+    else:
+        print(f"Genre '{genre_name}' not found. Please add the genre first.")
+
+
+def borrow_movie(user_name, movie_title):
+    user = session.query(User).filter_by(name=user_name).first()
+    movie = session.query(Movie).filter_by(title=movie_title).first()
+    if user and movie:
+        user.borrowed_movies.append(movie)
+        session.commit()
+    else:
+        print("User or movie not found. Please check the user and movie details.")
+
+
+def delete_user(name):
+    user = session.query(User).filter_by(name=name).first()
+    if user:
+        session.delete(user)
+        session.commit()
+        click.echo(f"User '{name}' deleted successfully.")
+    else:
+        click.echo(f"User '{name}' not found.")
+
+def see_all_movies():
+    movies = session.query(Movie).all()
+    if movies:
+        click.echo("\nAll Movies:")
+        for movie in movies:
+            click.echo(f"{movie.title} (Genre: {movie.genre.name})")
+    else:
+        click.echo("No movies in the database.")
+

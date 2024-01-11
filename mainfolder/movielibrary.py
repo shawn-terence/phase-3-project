@@ -27,7 +27,7 @@ class User(Base):
     __tablename__ = 'users'
     id = Column(Integer, primary_key=True)
     name = Column(String)
-    borrowed_movies = relationship('Movie', secondary='borrowed_movies')
+    rented_movies = relationship('Movie', secondary='rented_movies')
 
 class BorrowedMovies(Base):
     __tablename__ = 'rented_movies'
@@ -36,7 +36,9 @@ class BorrowedMovies(Base):
     movie_id = Column(Integer, ForeignKey('movies.id'))
 
 def create_database():
+    from seed_data import add_seed_data
     Base.metadata.create_all(engine)
+    add_seed_data(session)
 
 
 def search_movies(keyword):
@@ -68,7 +70,7 @@ def borrow_movie(user_name, movie_title):
     user = session.query(User).filter_by(name=user_name).first()
     movie = session.query(Movie).filter_by(title=movie_title).first()
     if user and movie:
-        user.borrowed_movies.append(movie)
+        user.rented_movies.append(movie)
         session.commit()
     else:
         print("User or movie not found. Please check the user and movie details.")
@@ -95,7 +97,6 @@ def see_all_movies():
 @click.command()
 def main():
     create_database()
-    load_data_from_files()
 
     while True:
         click.echo("\nMovie Database Management System")
@@ -147,3 +148,5 @@ def main():
             break
         else:
             click.echo("Invalid choice. Please enter a number between 1 and 8.")
+if __name__ == "__main__":
+    main()

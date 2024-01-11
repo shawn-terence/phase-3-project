@@ -30,7 +30,15 @@ class User(Base):
     borrowed_movies = relationship('Movie', secondary='borrowed_movies')
 
 class BorrowedMovies(Base):
-    __tablename__ = 'borrowed_movies'
+    __tablename__ = 'rented_movies'
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('users.id'))
     movie_id = Column(Integer, ForeignKey('movies.id'))
+
+def create_database():
+    Base.metadata.create_all(engine)
+
+
+def search_movies(keyword):
+    movies = session.query(Movie).filter(Movie.title.ilike(f'%{keyword}%')).all()
+    return movies

@@ -92,3 +92,58 @@ def see_all_movies():
     else:
         click.echo("No movies in the database.")
 
+@click.command()
+def main():
+    create_database()
+    load_data_from_files()
+
+    while True:
+        click.echo("\nMovie Database Management System")
+        click.echo("1. Search Movies")
+        click.echo("2. See All Movies")
+        click.echo("3. Add User")
+        click.echo("4. Add Genre")
+        click.echo("5. Add Movie")
+        click.echo("6. Rent a Movie")
+        click.echo("7. Delete User")
+        click.echo("8. Exit")
+        choice = click.prompt("Enter your choice (1-8)", type=int)
+
+        if choice == 1:
+            keyword = click.prompt("Enter the keyword to search")
+            movies = search_movies(keyword)
+            if movies:
+                click.echo("\nSearch Results:")
+                for movie in movies:
+                    click.echo(f"{movie.title} (Genre: {movie.genre.name})")
+            else:
+                click.echo("No movies found.")
+        elif choice == 2:
+            see_all_movies()
+        elif choice == 3:
+            name = click.prompt("Enter the user's name")
+            add_user(name)
+            click.echo(f"User '{name}' added successfully.")
+        elif choice == 4:
+            name = click.prompt("Enter the genre's name")
+            add_genre(name)
+            click.echo(f"Genre '{name}' added successfully.")
+        elif choice == 5:
+            title = click.prompt("Enter the movie's title")
+            genre_name = click.prompt("Enter the genre's name")
+            add_movie(title, genre_name)
+            click.echo(f"Movie '{title}' added successfully.")
+        elif choice == 6:
+            user_name = click.prompt("Enter the user's name")
+            movie_title = click.prompt("Enter the movie's title")
+            borrow_movie(user_name, movie_title)
+            click.echo(f"Movie '{movie_title}' rented by '{user_name}'.")
+        elif choice == 7:
+            name = click.prompt("Enter the user's name to delete")
+            delete_user(name)
+        elif choice == 8:
+            save_data_to_files()
+            click.echo("Data saved. Exiting Movie Database Management System. Goodbye!")
+            break
+        else:
+            click.echo("Invalid choice. Please enter a number between 1 and 8.")
